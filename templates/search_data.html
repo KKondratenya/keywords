@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Вход {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="row">
+        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+          <a href="/search">Поиск</a>
+          <div>
+            {% for data in data %}
+                  <div class="error-message">{{ data }}</div>
+                {% endfor %}
+          </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

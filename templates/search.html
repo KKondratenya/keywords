@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} Поиск {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="row">
+        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+            <form method="POST">
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="search" placeholder="Введите слово">
+                <div>
+                	<div>
+                		<input type="radio" id="author"
+					     name="choice" value="author">
+					    <label for="contactChoice1">По автору</label>
+                	</div>
+				    <div>
+					    <input type="radio" id="title"
+					     name="choice" value="title">
+					    <label for="contactChoice2">По заголовку</label>
+				    </div>
+				    <div>
+				    	 <input type="radio" id="keywords"
+					     name="choice" value="keywords">
+					    <label for="contactChoice3">По ключевым словам</label>
+				    </div>
+				  </div>
+               <button type="submit" class="btn btn-secondary">Поиск</button>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}
