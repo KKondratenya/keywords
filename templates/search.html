@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Поиск {% endblock %}
+{% block title %} {{title}} {% endblock %}
 {% block content %}
 {% csrf_token %}
 <div class="row">
@@ -7,24 +7,28 @@
         <div class="col-md-8 mx-auto social-container my-2 order-md-1">
             <form method="POST">
                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="search" placeholder="Введите слово">
-                <div>
-                	<div>
-                		<input type="radio" id="author"
-					     name="choice" value="author">
-					    <label for="contactChoice1">По автору</label>
-                	</div>
-				    <div>
-					    <input type="radio" id="title"
-					     name="choice" value="title">
-					    <label for="contactChoice2">По заголовку</label>
-				    </div>
-				    <div>
-				    	 <input type="radio" id="keywords"
-					     name="choice" value="keywords">
-					    <label for="contactChoice3">По ключевым словам</label>
-				    </div>
-				  </div>
-               <button type="submit" class="btn btn-secondary">Поиск</button>
+            	<div>
+            		<input type="radio" id="author"
+				     name="choice" value="author">
+				    <label for="contactChoice1">По автору</label>
+				    <input type="radio" id="title"
+				     name="choice" value="title">
+				    <label for="contactChoice2">По заголовку</label>
+			    	 <input type="radio" id="kws"
+				     name="choice" value="kws">
+				    <label for="contactChoice3">По ключевым словам</label>
+			  	</div>
+			  <input type="radio" name="type_search" id="all" value="all" checked>
+			  <label for="all">
+			    Вся библиотека
+			  </label>
+				  <input type="radio" name="type_search" id="users" value="users">
+				  <label for="users">
+				    Личная библиотека
+				  </label>
+				<div>
+               		<button type="submit" class="btn btn-secondary">Поиск</button>
+				</div>
             </form>
         </div>
     </div>

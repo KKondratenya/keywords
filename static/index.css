@@ -3,13 +3,15 @@ img {
 }
 
 .row {
+    position: relative;
     width: 100%;
     margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 .container-fluid {
-    height: 100vh;
-    background-color: #282c34;
+    margin: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +20,6 @@ img {
 .container-fluid > div {
     width: 85%;
     min-width: 300px;
-    max-width: 500px;
 }
 
 .card {
@@ -36,6 +37,14 @@ img {
     text-decoration: none ;
 }
 
-input {
-    margin: 10px 0;
+body {
+    background-color: #282c34;
+}
+
+button {
+    margin-top: 10px;
+}
+
+label {
+    margin: 0 5px;
 }
