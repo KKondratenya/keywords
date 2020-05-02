@@ -8,6 +8,7 @@ from home.models import User
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from vk_worker import show_user_library, delete_row_article_from_user_library
 # Create your views here.
 @login_required
 def home(request):
@@ -45,5 +46,21 @@ def registr(request):
 			print(form.errors.as_data())
 			return render(request, 'regis.html', {'form': form})
 		return render(request, 'home.html')
+	else:
+		HttpResponseNotAllowed(['GET', 'POST'])
+
+@login_required
+@csrf_exempt
+def library(request):
+	if request.method == 'GET':
+		data = show_user_library(request.user.username)
+		print(data)
+		return render(request, 'user_library.html', {'data': data})
+	elif request.method == 'POST':
+		data = show_user_library(request.user.username)
+		id = request.POST.get('author')
+		print(data[int(id) - 1][0], data[int(id) - 1][1])
+		data = delete_row_article_from_user_library(request.user.username, data[int(id) - 1][0], data[int(id) - 1][1])
+		return render(request, 'user_library.html', {'data': data})
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])

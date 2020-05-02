@@ -22,6 +22,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('search/', include('search.urls')),
     path('csv/', include('csv_worker.urls')),
+    path('posts/', include('vk_posts.urls')),
     path('', include('home.urls')),
 ]
 

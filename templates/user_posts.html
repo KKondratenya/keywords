@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} Посты вк {{search_data}} {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="row">
+    	{% if data|length > 0 %}
+        <div>
+            <form method="POST">
+                {% for data in data %}
+                <div><b>{{ forloop.counter }}. Название группы</b>: {{ data.1 }}</div>
+                <div class="mb-1">
+                    <button name="update" value={{ forloop.counter }}>Обновить</button>
+                    <button name="author" value={{ forloop.counter }}>Удалить</button>
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+        {% elif data|length == 0 %}
+        <h2>
+        	Ничего не найдено
+        </h2>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}

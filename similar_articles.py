@@ -3,6 +3,7 @@ from annotation import TextRank
 import re
 import pickle
 from sklearn.neighbors import NearestNeighbors
+from env import project_id, private_key,credentials, stops
 
 def treatment_text(review):
     try:
@@ -52,11 +53,8 @@ def find_similar(text,kws,ann):
     return r
 
 from google.oauth2 import service_account
-project_id = 'arctic-task-238719'
-private_key='arctic-task-238719-e6a1c5fe056b.json'
 import json
 from google.cloud import bigquery
-credentials = service_account.Credentials.from_service_account_file('./arctic-task-238719-e6a1c5fe056b.json')
 from pandas.io import gbq
 from sklearn.feature_extraction.text import TfidfVectorizer
 

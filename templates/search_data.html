@@ -8,7 +8,11 @@
         <div>
           {% for data in data %}
                 <div><b>{{ forloop.counter }}. Автор</b>: {{ data.0 }}</div>
-                <div class="mb-1"><span style="visibility: hidden;">{{ forloop.counter }} .</span><b>Название</b>: {{ data.1 }}</div>
+                <div class="mb-1">
+                    <span style="visibility: hidden;">{{ forloop.counter }} .
+                    </span>
+                    <b>Название</b>: {{ data.1 }}
+                </div>
           {% endfor %}
         </div>
         {% elif data|length == 0 %}

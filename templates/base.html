@@ -12,6 +12,26 @@
     <title>Social Auth with Django</title>
 </head>
 <body>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/search">Поиск</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/csv/download/">Загрузка</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/search/same_article">Найти похожее</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/library">Библиотека</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/posts/library">Посты в вк</a>
+        </li>
+         <li class="nav-item">
+            <a class="nav-link text-light" href="/posts">Парсинг группы вк</a>
+        </li>
+    </ul>
     <div class="container-fluid">
         <div>
             <h1 class="text-white text-center">{% block title %}{% endblock %}</h1>

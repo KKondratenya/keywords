@@ -1,12 +1,11 @@
 from nltk.stem.snowball import SnowballStemmer
 import csv
 import re
-from nltk.corpus import stopwords
 import pymorphy2
 from nltk.stem.porter import *
 import pickle
 from rake import RAKE
-
+from env import stops
 from deeppavlov.dataset_readers.basic_classification_reader import BasicClassificationDatasetReader
 from deeppavlov.dataset_iterators.basic_classification_iterator import BasicClassificationDatasetIterator
 from deeppavlov.dataset_iterators.basic_classification_iterator import BasicClassificationDatasetIterator
@@ -17,10 +16,7 @@ from deeppavlov.models.sklearn import SklearnComponent
 from deeppavlov.metrics.accuracy import sets_accuracy
 import numpy as np
 
-stops = set(stopwords.words("english")) | set(stopwords.words("russian"))
-stops.add('рис')
-stops.add('университет')
-stops.add('брянск')
+
 
 morph=pymorphy2.MorphAnalyzer()
 stemmer=SnowballStemmer('russian')

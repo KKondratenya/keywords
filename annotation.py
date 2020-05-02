@@ -6,6 +6,9 @@ import networkx as nx
 from sklearn.feature_extraction.text import CountVectorizer
 import math
 import re
+import nltk
+# nltk.download('stopwords')
+
 
 def treatment_text(text):
     text = re.sub("[^а-яА-Яa-zЁёA-Z0-9,.?]", " ", str(text))

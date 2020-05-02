@@ -1,0 +1,24 @@
+from google.oauth2 import service_account
+from google.cloud import bigquery
+import pandas as pd
+import pandas_gbq as gbq
+
+project_id = 'arctic-task-238719'
+private_key='arctic-task-238719-e6a1c5fe056b.json'
+credentials = service_account.Credentials.from_service_account_file('./arctic-task-238719-e6a1c5fe056b.json')
+
+gbq.context.credentials = credentials
+gbq.context.project = project_id
+
+
+def upload_user_bd(list_of_lists,username):
+	try:
+		print(list_of_lists)
+		print(username)
+		df = pd.DataFrame(list_of_lists, columns=['author','title','keywords'])
+		print(df)
+		gbq.to_gbq(df,'dataset.'+username, project_id , if_exists = 'append' )
+		return True
+
+	except:
+		return -1

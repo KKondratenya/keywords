@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'search',
-    'csv_worker'
+    'csv_worker',
+    'vk_posts'
 ]
 
 MIDDLEWARE = [

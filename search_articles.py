@@ -1,16 +1,13 @@
 import re
-
-from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 import pymorphy2
-from google.oauth2 import service_account
-project_id = 'arctic-task-238719'
-private_key='arctic-task-238719-e6a1c5fe056b.json'
+
+from env import project_id, private_key,credentials, stops
+
 import json
 from google.cloud import bigquery
-credentials = service_account.Credentials.from_service_account_file('./arctic-task-238719-e6a1c5fe056b.json')
 from pandas.io import gbq
-stops = set(stopwords.words("english")) | set(stopwords.words("russian"))
+
 import pandas as pd
 morph=pymorphy2.MorphAnalyzer()
 

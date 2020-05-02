@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} Загрузите csv {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="row">
+    	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+        	<input type="submit" name="save" class="send" value="Сохранить">
+			<br>
+			<br>
+			<span>
+				Ключевые слова
+			</span>
+			<span>
+				Аннотации
+			</span>
+			<span>
+				Статьи
+			</span>
+
+			{% for csv in csvs %}
+			<textarea name={{forloop.counter}}>{{csv.0}}</textarea>
+			<textarea name={{forloop.counter}}>{{csv.1}}</textarea>
+			<textarea name={{forloop.counter}}>{{csv.2}}</textarea>
+			<br>
+		{% endfor %}
+    	</form>
+    </div>
+</div>
+<style type="text/css">
+	textarea{
+	    resize: none;
+	    width: 25vw;
+	    height: 200px;
+		}
+	.send{
+		position: fixed;
+		left: 87%;
+		top: 5%;
+		width: 10vw;
+		height: 5vh;
+		font-size: 3vh;
+	}
+	span{
+		margin-left: 8vw;
+		margin-right: 8vw;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+</style>
+{% endblock %}
