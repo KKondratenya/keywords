@@ -4,8 +4,8 @@
 {% csrf_token %}
 <div class="row">
     <div class="row">
-    	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
-        	<input type="submit" name="save" class="send" value="Сохранить в БД">        	
+    	<form method="GET" action="/csv/give-file/" enctype="multipart/form-data">{% csrf_token %}
+        	<input type="submit" name="save" class="send" value="Сохранить на ПК">        	
 			<div class="flx">
 				<span>
 					Автор 
@@ -37,7 +37,7 @@
 		right: 0;
 		top: 5%;
 		font-size: 1.5em;
-		margin-right: 50px; 
+		margin-right: 50px;
 	}
 	span{
 		text-align: center;

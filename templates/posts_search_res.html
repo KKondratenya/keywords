@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Список групп Вконтакте {{search_data}} {% endblock %}
+{% block title %} Ваша библиотека {{search_data}} {% endblock %}
 {% block content %}
 {% csrf_token %}
 <div class="row">
@@ -7,8 +7,10 @@
     	{% if data|length > 0 %}
         <div>
             <form method="POST">
-                <form method="POST">
                 <div class="flx">
+                    <span class="header">
+                        <b>Автор</b>
+                    </span>
                     <span class="header">
                         <b>Название</b>
                     </span>
@@ -16,37 +18,24 @@
                  </div>
                 {% for data in data %}
                     <div class="flx">
+                        <span>{{ data.0 }}</span>
                         <span>{{ data.1 }}</span>
                         <span>
-                            <button name="update" value={{ forloop.counter }}>Обновить</button>
                             <button name="author" value={{ forloop.counter }}>Удалить</button>
                         </span>
                     </div>
                 {% endfor %}
             </form>
-            <div>
-                {{ msg }}
-            </div>
         </div>
         {% elif data|length == 0 %}
         <h2>
-        	Необходимо добавить группы
+        	Ничего не найдено
         </h2>
         {% endif %}
     </div>
-    <script type="text/javascript">
-       const row = document.querySelector('.row')
-       const form = document.querySelector('form')
-       console.log(row)
-       form.addEventListener('submit',() => {
-            const div = document.createElement('div')
-            div.innerText = 'Идет обновление группы'
-            row.append(div)
-       })
-    </script>
-</div>
-<style type="text/css">
-    .flx {
+    </div>
+    <style type="text/css">
+        .flx {
             display: flex;
             justify-content: center;
             border-left: 1px solid #000;
@@ -67,5 +56,5 @@
             float: right;
             margin: 5px 10px;
         }
-</style>
+    </style>
 {% endblock %}

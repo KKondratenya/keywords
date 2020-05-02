@@ -8,12 +8,12 @@
             <form method="POST">
                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="search" placeholder="Введите слово">
             	<div>
-            		<input type="radio" id="author"
-				     name="choice" value="author">
-				    <label for="contactChoice1">По автору</label>
-				    <input type="radio" id="title"
-				     name="choice" value="title">
+            		<input type="radio" id="title"
+				     name="choice" value="title" checked>
 				    <label for="contactChoice2">По заголовку</label>
+            		<input type="radio" id="author"
+				     name="choice" value="author" >
+				    <label for="contactChoice1">По автору</label>
 			    	 <input type="radio" id="kws"
 				     name="choice" value="kws">
 				    <label for="contactChoice3">По ключевым словам</label>
@@ -22,15 +22,31 @@
 			  <label for="all">
 			    Вся библиотека
 			  </label>
-				  <input type="radio" name="type_search" id="users" value="users">
-				  <label for="users">
-				    Личная библиотека
-				  </label>
+			  <input type="radio" name="type_search" id="users" value="users">
+			  <label for="users">
+			    Личная библиотека
+			  </label>
 				<div>
                		<button type="submit" class="btn btn-secondary">Поиск</button>
 				</div>
             </form>
         </div>
     </div>
+    <script type="text/javascript">
+    	let input = document.querySelector('input[type="text"]')
+    	let button = document.querySelector('button[type="submit"]')
+    	if (input.value.trim() !== '') {
+    			button.removeAttribute('disabled')
+    		} else {
+    			button.setAttribute('disabled', true)
+    	}
+    	input.addEventListener('input', () => {
+    		if (input.value.trim() !== '') {
+    			button.removeAttribute('disabled')
+    		} else {
+    			button.setAttribute('disabled', true)
+    		}
+    	})
+    </script>
     </div>
 {% endblock %}

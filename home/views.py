@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from vk_worker import show_user_library, delete_row_article_from_user_library
+from env import credentials,project_id,private_key
 # Create your views here.
 @login_required
 def home(request):
@@ -37,7 +38,7 @@ def registr(request):
 		return render(request, 'regis.html', {'form': form})	
 	elif request.method == 'POST':
 		form = RegistrForm(request.POST)
-		if form.is_valid():
+		if form.is_valid() and (form.cleaned_data['password'] == request.POST['password2']):
 			user = User(username=form.cleaned_data['username'], first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'])
 			user.set_password(form.cleaned_data['password'])
 			user.save()
@@ -53,14 +54,14 @@ def registr(request):
 @csrf_exempt
 def library(request):
 	if request.method == 'GET':
-		data = show_user_library(request.user.username)
+		data = show_user_library(request.user.username,project_id,credentials=credentials)
 		print(data)
 		return render(request, 'user_library.html', {'data': data})
 	elif request.method == 'POST':
-		data = show_user_library(request.user.username)
+		data = show_user_library(request.user.username,project_id,credentials=credentials)
 		id = request.POST.get('author')
 		print(data[int(id) - 1][0], data[int(id) - 1][1])
-		data = delete_row_article_from_user_library(request.user.username, data[int(id) - 1][0], data[int(id) - 1][1])
+		data = delete_row_article_from_user_library(request.user.username, data[int(id) - 1][0], data[int(id) - 1][1],project_id,credentials)
 		return render(request, 'user_library.html', {'data': data})
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])

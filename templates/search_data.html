@@ -2,7 +2,8 @@
 {% block title %} Результаты на запрос: {{search_data}} {% endblock %}
 {% block content %}
 {% csrf_token %}
-<div class="row">
+<div>
+    <a href="/search">Назад</a>
     <div class="row">
     	{% if data|length > 0 %}
         <div>

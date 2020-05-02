@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %} Загрузите csv {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="csv">
+    <div>
+    	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+    		<label>
+    			<span>Приложите CSV файл</span>
+        		<input type="file" name="csv_file" required="" id="id_csv_file" accept="text/csv">
+    		</label>
+    		<button type="submit">Загрузка</button>
+    		<div>
+    			{{ msg }}
+    		</div>
+    	</form>
+    </div>
+</div>
+<div class="row">
+    <div class="row">
+        <form class="form-area" method="POST">
+            <div class="form-group">
+              <textarea class="text" placeholder="Введите текст" name="article">{{article}}</textarea>
+            </div>
+             <button type="submit" class="btn btn-secondary" name="create" value="create">Создать</button>                                                          
+            <div class="input-group mb-3">
+              <textarea class="form-control" placeholder="Ключевые слова" aria-label="keyword" name="keyword">{{keyword}}</textarea>
+            </div>
+            <div class="input-group mb-3">
+              <textarea class="form-control" placeholder="Аннотации" aria-label="annotation" name="annotation">{{annotation}}</textarea>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        let article = document.querySelector('textarea[name="article"]')
+        let button = document.querySelector('button[name="find_similiar"]')
+        button.setAttribute('disabled', true)
+        const checkTextAreas = () => {
+            if (article.value.trim() !== '')
+            {
+                button.removeAttribute('disabled')
+            } else {
+                button.setAttribute('disabled', true)
+            }
+        }
+        article.addEventListener('input', checkTextAreas)
+    </script>
+</div>
+<style type="text/css">
+    textarea {
+        resize: none;
+        width: 100%;
+        height: 200px;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+     }
+     .form-area {
+        width: 100%;
+     }
+     .csv {
+        margin: 30px 0;
+     }
+     /*input {
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+     }*/
+</style>
+{% endblock %}

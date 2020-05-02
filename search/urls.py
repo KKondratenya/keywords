@@ -3,5 +3,5 @@ from django.urls import path
 
 urlpatterns = [
     path('', search_page, name='search'),
-    path('same_article', same_article, name='same_article')
+    path('same_article', same_article, name='same_article'),
 ]

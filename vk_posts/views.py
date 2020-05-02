@@ -10,7 +10,7 @@ from env import credentials,project_id,private_key
 @csrf_exempt
 def search_page(request):
 	if request.method == 'GET':
-		return render(request, 'vk_search.html', {'title': 'Поиск'})	
+		return render(request, 'vk_search.html', {'title': 'Добавить'})	
 	elif request.method == 'POST':
 		# pritn(request.POST)
 		data = (upload_post_from_vk_group(request.user.username, request.POST.get('search'),project_id,credentials))
@@ -34,10 +34,16 @@ def user_posts(request):
 			data = delete_row_group_from_user_library(request.user.username, data[int(id) - 1][0],project_id=project_id,credentials=credentials)
 		elif request.POST.get('update'):
 			id = request.POST.get('update')
-			print(data)
-			print(id)
-			update_post_from_vk_group(request.user.username, data[int(id) - 1][0],credentials=credentials)
-		return render(request, 'user_posts.html', {'data': data})
+			update_post_from_vk_group(request.user.username, data[int(id) - 1][0],project_id,credentials=credentials)
+		return render(request, 'user_posts.html', {'data': data, 'msg': f'Группа {data[int(id) - 1][1]} обновлена'})
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
 
+
+@login_required
+@csrf_exempt
+def posts_search(request):
+	if request.method == 'GET':
+		return render(request, 'posts_search.html')
+	elif request.method == 'POST':
+		return render(request, 'posts_search_res.html', {'data': []})

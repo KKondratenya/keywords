@@ -36,7 +36,10 @@ def upload_post_from_vk_group(username,group_id,project_id,credentials):
                             )
 
     print(response.json())
-    group_name=response.json()['response'][0]['name']
+    try:
+        group_name=response.json()['response'][0]['name']
+    except:
+        return([])
     k=100
     while (k==100):
         start_time = time.time()
@@ -60,7 +63,10 @@ def upload_post_from_vk_group(username,group_id,project_id,credentials):
                                         'offset':offset
                                     }
                                     )
-        data = response.json()['response']['items']
+        try:
+            data = response.json()['response']['items']
+        except:
+            return ([])
         offset += 100
         k=len(data)
         j=0
@@ -82,7 +88,7 @@ def delete_row_group_from_user_library(username,group_id, credentials=credential
     
     Query=f'DELETE  FROM dataset.vk_storage_{username} WHERE group_id = \'{group_id}\''
     query_job = client.query(Query)
-    return show_all_groups(username)
+    return show_all_groups(username,project_id,credentials)
 
 def search_in_user_vk_library(username,word='',mode='post',project_id=project_id,credentials=credentials):
     
@@ -137,11 +143,14 @@ def search_in_user_vk_library(username,word='',mode='post',project_id=project_id
 
     return (result)
 
-def show_user_library(username):
-	Query = f'SELECT author,title FROM dataset.{username}'
-	df = gbq.read_gbq(Query, project_id, credentials=credentials)
-	result = df.values.tolist()
-	return result 
+def show_user_library(username,project_id,credentials):
+    Query = f'SELECT author,title FROM dataset.{username}'
+    try:
+        df = gbq.read_gbq(Query, project_id, credentials=credentials)
+        result = df.values.tolist()
+        return result 
+    except:
+        return([])
 
 def delete_row_article_from_user_library(username,author,title,project,credentials):
     print(username)
@@ -150,12 +159,15 @@ def delete_row_article_from_user_library(username,author,title,project,credentia
     client = bigquery.Client(project=project,credentials=credentials)
     Query=f'DELETE  FROM dataset.{username} WHERE author like \'%{author}%\' and title like \'%{title}%\' '
     query_job = client.query(Query)
-    return show_user_library(username)
+    return show_user_library(username,project,credentials)
 
 def show_all_groups(username,project_id,credentials):
-    Query = f'SELECT group_id, group_name FROM dataset.vk_storage_{username} group by group_id, group_name'
-    df = gbq.read_gbq(Query, project_id, credentials=credentials)
-    return df.values.tolist()
+    try:
+        Query = f'SELECT group_id, group_name FROM dataset.vk_storage_{username} group by group_id, group_name'
+        df = gbq.read_gbq(Query, project_id, credentials=credentials)
+        return df.values.tolist()
+    except:
+        return ([])
 
 def update_post_from_vk_group(username,group_id,project_id,credentials):
     last_post_id = data_about_group_for_update(username,group_id,project_id,credentials)[0]

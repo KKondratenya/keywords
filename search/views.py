@@ -50,3 +50,4 @@ def same_article(request):
 		return render(request, 'article.html')
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
+	

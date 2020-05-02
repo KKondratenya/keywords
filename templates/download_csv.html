@@ -5,8 +5,14 @@
 <div class="row">
     <div class="row">
     	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
-        	{{form}}
+    		<label>
+    			<span>Приложите CSV файл</span>
+        		<input type="file" name="csv_file" required="" id="id_csv_file" accept="text/csv">
+    		</label>
     		<button type="submit">Загрузка</button>
+    		<div>
+    			{{ msg }}
+    		</div>
     	</form>
     </div>
 </div>

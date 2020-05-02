@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponse
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from csv_worker.models import CSV
@@ -8,9 +8,12 @@ from csv_worker.forms import CsvForm
 from django.conf import settings
 import csv
 from csv_download import upload_user_bd
+import mimetypes
+from similar_articles import create_description
+# from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 
-
-ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'jpeg', 'csv'])
+ALLOWED_EXTENSIONS = set(['csv'])
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -32,24 +35,79 @@ def download(request):
 			upload_user_bd(arr, request.user.username)
 		else:
 			form = CsvForm(request.POST, request.FILES)
-			# print(request.FILES)
-			if form.is_valid():
+			print((request.FILES['csv_file'].content_type))
+			if form.is_valid() and request.FILES['csv_file'].content_type == 'text/csv':
 				new_csv = CSV(user=request.user, csv_file=form.cleaned_data['csv_file'])
 				new_csv.save()
 				new_form = CsvForm()
-				print()	
+				print(new_csv.csv_file)	
 				path = settings.BASE_DIR + '/media/' + str(new_csv.csv_file)
 				with open(path) as obj:
 					reader = csv.reader(obj)
 					data = list(reader)
-					# for row in reader:
-					# 	print(" ".join(row))
 				new_csv.delete()
 				os.remove(path)
-				print(data)
 				return render(request, 'edit_csv.html', {'csvs': data})
+			else:
+				return render(request, 'download_csv.html', {'msg': 'Был получен не csv файл'})
+				
 			form = CsvForm()
-		return render(request, 'home.html')
-			   
+		return render(request, 'home.html')		   
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
+
+
+
+@login_required
+@csrf_exempt
+def package_work(request):
+	if request.method == 'GET':
+		return render(request, 'package.html')	
+	elif request.method == 'POST':
+		arr = []
+		if request.POST.get('save'):
+			for i in request.POST:
+				data = request.POST.getlist(i)
+				if len(data) > 1:
+					arr.append(data)
+			upload_user_bd(arr, request.user.username)
+		else:
+			if 'article' in request.POST:
+				desciption = create_description(request.POST['article'], '', '')
+				return render(request, 'package.html', {'article': desciption[0], 'keyword': desciption[1], 'annotation': desciption[2]})	
+			form = CsvForm(request.POST, request.FILES)
+			print((request.FILES['csv_file'].content_type))
+			if form.is_valid() and request.FILES['csv_file'].content_type == 'text/csv':
+				new_csv = CSV(user=request.user, csv_file=form.cleaned_data['csv_file'])
+				new_csv.save()
+				new_form = CsvForm()
+				path = settings.BASE_DIR + '/media/' + str(new_csv.csv_file)
+				new_path = settings.BASE_DIR + '/media/csv.csv'
+				os.rename(path, new_path)
+				with open(new_path) as obj:
+					reader = csv.reader(obj)
+					data = list(reader)
+				# new_csv.delete()
+				# os.remove(new_path)
+				return render(request, 'package_csv.html', {'csvs': data})
+			else:
+				return render(request, 'download_csv.html', {'msg': 'Был получен не csv файл'})
+				
+			form = CsvForm()
+		return render(request, 'home.html')		   
+	else:
+		HttpResponseNotAllowed(['GET', 'POST'])
+
+@login_required
+@csrf_exempt
+def give_file(request):
+	if request.method == 'GET':
+		content_type = 'text/csv'
+		the_file = (settings.BASE_DIR + '/media/csv.csv')
+		filename = os.path.basename(settings.BASE_DIR + '/media/csv.csv')
+		chunk_size = 8192
+		response = StreamingHttpResponse(FileWrapper(open(the_file, 'rb'), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+		response['Content-Disposition'] = "attachment; filename=%s" % filename
+		response['Content-Length'] = os.path.getsize(the_file)
+		return response

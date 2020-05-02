@@ -24,7 +24,7 @@ def search_user_library(username,q='',mode='title'):
             return "некорректный ввод"
 
         if mode=='author':
-            Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHORS LIKE \''
+            Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHOR LIKE \''
             for word in words:
                 Query+='%{}'.format(word)
             Query += '%\''
@@ -32,7 +32,7 @@ def search_user_library(username,q='',mode='title'):
             df = gbq.read_gbq(Query, project_id, credentials=credentials)
             print(df.values.tolist())
             if df.values.tolist()==[]:
-                Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHORS LIKE \'%{}%\''.format(q)
+                Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHOR LIKE \'%{}%\''.format(q)
                 print(Query)
                 df = gbq.read_gbq(Query, project_id, credentials=credentials)
 
