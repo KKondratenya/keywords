@@ -137,7 +137,7 @@ def search_in_user_vk_library(username,word='',mode='post',project_id=project_id
         Query +='%\''
         
     print(Query)   
-    df = gbqmore.read_gbq(Query, project_id, credentials=credentials)
+    df = gbq.read_gbq(Query, project_id, credentials=credentials)
     
     result = df.values.tolist()
 

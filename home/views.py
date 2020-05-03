@@ -65,3 +65,12 @@ def library(request):
 		return render(request, 'user_library.html', {'data': data})
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
+
+
+@login_required
+@csrf_exempt
+def info(request):
+	if request.method == 'GET':
+		return render(request, 'info.html')
+	else:
+		HttpResponseNotAllowed(['GET', 'POST'])

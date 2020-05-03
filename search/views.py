@@ -32,6 +32,8 @@ def same_article(request):
 	if request.method == 'GET':
 		return render(request, 'article.html')	
 	elif request.method == 'POST':
+		if len(request.POST['article'].split()) < 20:
+			return render(request, 'article.html', {'msg': 'Слишком короткий текст. Минимальное количество слов 20.'})
 		if request.POST.get('create'):
 			desciption = create_description(request.POST['article'], '', '')
 			return render(request, 'article.html', {'article': desciption[0], 'keyword': desciption[1], 'annotation': desciption[2]})	

@@ -30,9 +30,16 @@ def download(request):
 		if request.POST.get('save'):
 			for i in request.POST:
 				data = request.POST.getlist(i)
+				print(data)
 				if len(data) > 1:
 					arr.append(data)
-			upload_user_bd(arr, request.user.username)
+			res = upload_user_bd(arr, request.user.username)
+			print(res)
+			if res == -1:
+				return render(request, 'success.html', {'msg': 'Ошибка при загрузке файла в бд'})
+			else:
+				return render(request, 'success.html', {'msg': 'Успех'})
+
 		else:
 			form = CsvForm(request.POST, request.FILES)
 			print((request.FILES['csv_file'].content_type))
@@ -103,6 +110,12 @@ def package_work(request):
 def give_file(request):
 	if request.method == 'GET':
 		content_type = 'text/csv'
+		for i in request.POST:
+			data = request.POST.getlist(i)
+			if len(data) > 1:
+				arr.append(data)
+			writer.writerow(line)
+		upload_user_bd(arr, request.user.username)
 		the_file = (settings.BASE_DIR + '/media/csv.csv')
 		filename = os.path.basename(settings.BASE_DIR + '/media/csv.csv')
 		chunk_size = 8192

@@ -9,20 +9,16 @@
             <form method="POST">
                 <div class="flx">
                     <span class="header">
-                        <b>Автор</b>
-                    </span>
-                    <span class="header">
                         <b>Название</b>
                     </span>
-                    <span></span>
+                    <span class="header">
+                        <b>Пост</b>
+                    </span>
                  </div>
                 {% for data in data %}
                     <div class="flx">
-                        <span>{{ data.0 }}</span>
                         <span>{{ data.1 }}</span>
-                        <span>
-                            <button name="author" value={{ forloop.counter }}>Удалить</button>
-                        </span>
+                        <span>{{ data.3 }}</span>
                     </div>
                 {% endfor %}
             </form>
@@ -45,7 +41,7 @@
             border-left: 1px solid #000;
         }
         .flx > span {
-            flex: 1 1;
+            flex-grow: 1;
             border-bottom: 1px solid #000;
             padding: 5px;
         }
@@ -56,5 +52,6 @@
             float: right;
             margin: 5px 10px;
         }
+
     </style>
 {% endblock %}

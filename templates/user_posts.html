@@ -18,8 +18,8 @@
                     <div class="flx">
                         <span>{{ data.1 }}</span>
                         <span>
-                            <button name="update" value={{ forloop.counter }}>Обновить</button>
-                            <button name="author" value={{ forloop.counter }}>Удалить</button>
+                            <button name="update" value={{ data.0 }}>Обновить</button>
+                            <button name="delete" value={{ data.0 }}>Удалить</button>
                         </span>
                     </div>
                 {% endfor %}
@@ -35,14 +35,32 @@
         {% endif %}
     </div>
     <script type="text/javascript">
-       const row = document.querySelector('.row')
-       const form = document.querySelector('form')
-       console.log(row)
-       form.addEventListener('submit',() => {
-            const div = document.createElement('div')
-            div.innerText = 'Идет обновление группы'
-            row.append(div)
-       })
+        const row = document.querySelector('.row')
+        const form = document.querySelector('form')
+        const button = document.querySelectorAll('button')
+        const delete_button = document.querySelectorAll('button[name="delete"]')
+        const update_buttons = document.querySelectorAll('button[name="update"]')
+        console.log(update_buttons)
+        for (let i = 0; i < update_buttons.length; i++) {
+            update_buttons[i].addEventListener('click',() => {
+                const div = document.createElement('div')
+                div.innerText = 'Идет обновление группы'
+                row.append(div)
+            })
+        }
+
+        for (let i = 0; i < delete_button.length; i++) {
+            delete_button[i].addEventListener('click',(event) => {
+                result = confirm('Вы точно хотите удалить группу?');
+                if (result) {
+                    const div = document.createElement('div')
+                    div.innerText = 'Идет удаление группы'
+                    row.append(div)
+                } else {
+                    event.preventDefault()
+                }
+            })
+        }
     </script>
 </div>
 <style type="text/css">

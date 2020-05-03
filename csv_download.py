@@ -2,10 +2,8 @@ from google.oauth2 import service_account
 from google.cloud import bigquery
 import pandas as pd
 import pandas_gbq as gbq
+from env import project_id, private_key,credentials
 
-project_id = 'arctic-task-238719'
-private_key='arctic-task-238719-e6a1c5fe056b.json'
-credentials = service_account.Credentials.from_service_account_file('./arctic-task-238719-e6a1c5fe056b.json')
 
 gbq.context.credentials = credentials
 gbq.context.project = project_id
