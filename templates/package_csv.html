@@ -14,7 +14,13 @@
 					Название
 				</span>
 				<span>
+					Статья
+				</span>
+				<span>
 					Ключевые слова
+				</span>
+				<span>
+					Аннотация
 				</span>
 			</div>
 			{% for csv in csvs %}
@@ -22,6 +28,8 @@
 				<textarea name={{forloop.counter}}>{{csv.0}}</textarea>
 				<textarea name={{forloop.counter}}>{{csv.1}}</textarea>
 				<textarea name={{forloop.counter}}>{{csv.2}}</textarea>
+				<textarea name={{forloop.counter}}>{{csv.3}}</textarea>
+				<textarea name={{forloop.counter}}>{{csv.4}}</textarea>
 			</div>
 		{% endfor %}
     	</form>
@@ -35,9 +43,10 @@
 	.send{
 		position: fixed;
 		right: 0;
-		top: 5%;
+		top: 55px;
 		font-size: 1.5em;
 		margin-right: 50px;
+C:\Users\Ирина\PycharmProjects\vk\venv\Scripts\activate
 	}
 	span{
 		text-align: center;

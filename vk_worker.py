@@ -91,57 +91,59 @@ def delete_row_group_from_user_library(username,group_id, credentials=credential
     return show_all_groups(username,project_id,credentials)
 
 def search_in_user_vk_library(username,word='',mode='post',project_id=project_id,credentials=credentials):
-    
-    if mode=='post_from_group':
-        group_name,word=word.split(',')
-        
+    try:
+        if mode=='post_from_group':
+            group_name,word=word.split(',')
+
+            word = re.sub("[^а-яА-Яa-zA-Z0-9]", " ", word)
+            words = word.lower().split()
+            words = [w for w in words if not w in stops]
+            words = [stemmer.stem(w) for w in words]
+            if words=='':
+                return "некорректный ввод"
+
+            Query = f'SELECT * FROM dataset.vk_storage_{username}  WHERE group_name=\'{group_name}\' and (post LIKE \''
+            for word in words:
+                Query+='%{}'.format(word)
+            Query +='%\' or post LIKE \' '
+            flag=True
+            for word in words:
+                if flag==True:
+                    Query+='%{}'.format(word.capitalize())
+                    flag=False
+                else:
+                    Query+='%{}'.format(word)
+            Query +='%\')'
+
         word = re.sub("[^а-яА-Яa-zA-Z0-9]", " ", word)
         words = word.lower().split()
         words = [w for w in words if not w in stops]
         words = [stemmer.stem(w) for w in words]
         if words=='':
             return "некорректный ввод"
-        
-        Query = f'SELECT * FROM dataset.vk_storage_{username}  WHERE group_name=\'{group_name}\' and (post LIKE \''
-        for word in words:
-            Query+='%{}'.format(word)
-        Query +='%\' or post LIKE \' '
-        flag=True
-        for word in words:
-            if flag==True:
-                Query+='%{}'.format(word.capitalize())
-                flag=False
-            else:
-                Query+='%{}'.format(word)
-        Query +='%\')'
-    
-    word = re.sub("[^а-яА-Яa-zA-Z0-9]", " ", word)
-    words = word.lower().split()
-    words = [w for w in words if not w in stops]
-    words = [stemmer.stem(w) for w in words]
-    if words=='':
-        return "некорректный ввод"
 
-    if mode=='post':
-        Query = f'SELECT * FROM dataset.vk_storage_{username}  WHERE post LIKE \''
-        for word in words:
-            Query+='%{}'.format(word)
-        Query +='%\' or post LIKE \' '
-        flag=True
-        for word in words:
-            if flag==True:
-                Query+='%{}'.format(word.capitalize())
-                flag=False
-            else:
+        if mode=='post':
+            Query = f'SELECT * FROM dataset.vk_storage_{username}  WHERE post LIKE \''
+            for word in words:
                 Query+='%{}'.format(word)
-        Query +='%\''
-        
-    print(Query)   
-    df = gbq.read_gbq(Query, project_id, credentials=credentials)
-    
-    result = df.values.tolist()
+            Query +='%\' or post LIKE \' '
+            flag=True
+            for word in words:
+                if flag==True:
+                    Query+='%{}'.format(word.capitalize())
+                    flag=False
+                else:
+                    Query+='%{}'.format(word)
+            Query +='%\''
 
-    return (result)
+        print(Query)
+        df = gbq.read_gbq(Query, project_id, credentials=credentials)
+
+        result = df.values.tolist()
+
+        return (result)
+    except:
+        return []
 
 def show_user_library(username,project_id,credentials):
     Query = f'SELECT author,title FROM dataset.{username}'

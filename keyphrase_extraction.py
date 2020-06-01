@@ -1,4 +1,4 @@
-from nltk.stem.snowball import SnowballStemmer
+﻿from nltk.stem.snowball import SnowballStemmer
 import csv
 import re
 import pymorphy2
@@ -189,7 +189,7 @@ def keyword_extraction(text):
             sentences_with_kw.append(test[i])
     dict_cand = {}
     for sentence in sentences_with_kw:
-        cand = extract_candidate(sentence[0], sentences_with_kw)
+        cand = extract_candidate(sentence[0])
         cand = list(map(normalize, cand))
         for key_cand in cand:
             if key_cand in dict_cand:
@@ -232,9 +232,9 @@ def keyword_extraction(text):
     else:
         keywords = r.keywords_extract(text)
         keywords = ', '.join(keywords).capitalize()
-        return 'RAAAAAKE'+keywords
+        return keywords
 
-def extract_candidate(origin, sentences_with_kw):
+def extract_candidate(origin):
     candidate = []
     x = re.sub("[^а-яА-Я]", " ", origin)
     while x.find('  ') != -1:

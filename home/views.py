@@ -1,4 +1,3 @@
-from django.shortcuts import render
 
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render
@@ -7,9 +6,9 @@ from .forms import UserForm, RegistrForm
 from home.models import User
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 from vk_worker import show_user_library, delete_row_article_from_user_library
-from env import credentials,project_id,private_key
+from env import credentials,project_id
+
 # Create your views here.
 @login_required
 def home(request):
@@ -66,11 +65,3 @@ def library(request):
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
 
-
-@login_required
-@csrf_exempt
-def info(request):
-	if request.method == 'GET':
-		return render(request, 'info.html')
-	else:
-		HttpResponseNotAllowed(['GET', 'POST'])

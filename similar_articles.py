@@ -4,6 +4,11 @@ import re
 import pickle
 from sklearn.neighbors import NearestNeighbors
 from env import project_id, private_key,credentials, stops
+from nltk.stem.snowball import SnowballStemmer
+import pymorphy2
+morph=pymorphy2.MorphAnalyzer()
+
+stemmer=SnowballStemmer('russian')
 
 def treatment_text(review):
     try:
@@ -17,32 +22,55 @@ def treatment_text(review):
     except:
         return review
 
+def treatment_text2(review):
+    try:
+        review_text = re.sub("[^а-яА-Яa-zA-Z0-9]", " ", review)
+        words = review_text.lower().split(',')
+        words = [w for w in words if not w in stops]
+        words = [morph.parse(w)[0].normal_form for w in words]
+        words = [stemmer.stem(w) for w in words]
+        words = [w for w in words if not w in stops]
+        return(' '.join(words))
+    except:
+        return review
+
+
 with open('vectorizer.pickle', 'rb') as f:
     vectorizer = pickle.load(f)
 
 with open('knn.pickle', 'rb') as f:
     neigh = pickle.load(f)
 
-with open('dataset.pickle', 'rb') as f:
+with open('dataset_knn.pickle', 'rb') as f:
     df = pickle.load(f)
 
 ann_extr = TextRank()
 
-def create_description(text,str_kws,str_ann):
+
+def package(list_of_lists):
+    for i in range(len(list_of_lists)):
+        text = list_of_lists[i][2]
+        try:
+            kws = keyword_extraction(text)
+        except:
+            kws=''
+        ann = ann_extr.extract(text,mera='serense')
+        list_of_lists[i].append(kws)
+        list_of_lists[i].append(ann)
+    return list_of_lists
+
+
+
+def create_description(text,str_kws,str_ann,mera='serense'):
     if str_ann=='' or str_ann=='\n':
-        str_ann = ann_extr.extract(text)
+        str_ann = ann_extr.extract(text,mera=mera)
     if str_kws=='' or str_kws=='\n':
         str_kws = keyword_extraction(text)
     return [text,str_kws,str_ann]
 
 
-# with open('vectorizer.pickle', 'rb') as f:
-#     vectorizer = pickle.load(f)
-
-# with open('knn.pickle', 'rb') as f:
-#     neigh = pickle.load(f)
 def find_similar(text,kws,ann):
-    s = kws+ann
+    s = kws
     s = treatment_text(s)
     s = vectorizer.transform([s])
     s = s.toarray()
@@ -68,17 +96,16 @@ def similar_articles_from_user_library(username,text,kws,ann):
         vectorizer = TfidfVectorizer()
         X = vectorizer.fit_transform(x)
         neigh = NearestNeighbors(n_neighbors=5).fit(X)
-        s = treatment_text(kws+ann)
+        s = treatment_text2(kws+ann)
         s = vectorizer.transform([s]).toarray()
         result = neigh.kneighbors(s)[1][0]
         r =[]
         for i in result:
             r.append(df.loc[i][['authors','title','keywords']].values.tolist())
         return r
-    except TransportError:
-        return False
+
     except:
-        return -1
+        return []
 
     
 # find_similar('колебание коэффициент демпфирования модуль упругость установка','','')

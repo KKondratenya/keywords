@@ -9,36 +9,32 @@
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous" />
     <link rel="stylesheet" href="{% static 'index.css' %}" />
-    <title>Social Auth with Django</title>
+    <title>Searching library</title>
 </head>
 <body>
     <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/">Главная</a>
+        </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="/search">Поиск по статьями</a>
+        <a class="nav-link text-light" href="/search">Поиск</a>
       </li>
+      <li class="nav-item">
+          <a class="nav-link text-light" href="/search/same_article">Найти похожие</a></li>
       <li class="nav-item">
         <a class="nav-link text-light" href="/csv/download/">Загрузка</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light" href="/search/same_article">Найти похожее</a>
       </li>
         <li class="nav-item">
             <a class="nav-link text-light" href="/library">Личная библиотека</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" href="/posts/library">Список групп вк</a>
+            <a class="nav-link text-light" href="/posts/library">Список групп</a>
         </li>
          <li class="nav-item">
-            <a class="nav-link text-light" href="/posts">Добавление группы вк</a>
+            <a class="nav-link text-light" href="/posts">Добавление группы</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-light" href="/csv/package">Пакетная обработка</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" href="/posts/search">Поиск по группам вк</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" href="/info">Инфо</a>
         </li>
         <li class="nav-item ml-auto">
             <a class="nav-link text-light" href="/logout">Выйти</a>

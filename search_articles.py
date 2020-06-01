@@ -1,4 +1,4 @@
-import re
+﻿import re
 from nltk.stem.snowball import SnowballStemmer
 import pymorphy2
 
@@ -28,13 +28,22 @@ def search_user_library(username,q='',mode='title'):
             for word in words:
                 Query+='%{}'.format(word)
             Query += '%\''
-            print(Query)
+
+            print(1,Query)
             df = gbq.read_gbq(Query, project_id, credentials=credentials)
             print(df.values.tolist())
+
             if df.values.tolist()==[]:
+                print(2)
                 Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHOR LIKE \'%{}%\''.format(q)
                 print(Query)
                 df = gbq.read_gbq(Query, project_id, credentials=credentials)
+                print(df.values.tolist())
+                if df.values.tolist()==[]:
+                    print(3)
+                    Query = 'SELECT * FROM dataset.'+username+' WHERE AUTHOR LIKE \'%{}%\''.format(q.capitalize())
+                    print(df.values.tolist())
+                    df = gbq.read_gbq(Query, project_id, credentials=credentials)
 
         if mode=='title':
     #         words = [morph.parse(w)[0].normal_form for w in words]
@@ -68,10 +77,8 @@ def search_user_library(username,q='',mode='title'):
             return result
         else:
             return result
-    except TransportError:
-        return False
     except:
-        return -1
+        return []
 
 
 stemmer=SnowballStemmer('russian')
@@ -88,7 +95,7 @@ def search(q='',mode='title'):
             return "некорректный ввод"
 
         if mode=='author':
-            Query = 'SELECT * FROM dataset.search_rsl_ru WHERE AUTHORS LIKE \''
+            Query = 'SELECT * FROM dataset.search_rsl_ru WHERE AUTHOR LIKE \''
             for word in words:
                 Query+='%{}'.format(word)
             Query += '%\''
@@ -96,9 +103,13 @@ def search(q='',mode='title'):
             df = gbq.read_gbq(Query, project_id, credentials=credentials)
             print(df.values.tolist())
             if df.values.tolist()==[]:
-                Query = 'SELECT * FROM dataset.search_rsl_ru WHERE AUTHORS LIKE \'%{}%\''.format(q)
+                Query = 'SELECT * FROM dataset.search_rsl_ru WHERE AUTHOR LIKE \'%{}%\''.format(q)
                 print(Query)
                 df = gbq.read_gbq(Query, project_id, credentials=credentials)
+                if df.values.tolist() == []:
+                    Query = 'SELECT * FROM dataset.search_rsl_ru WHERE AUTHOR LIKE \'%{}%\''.format(q.capitalize())
+                    print(Query)
+                    df = gbq.read_gbq(Query, project_id, credentials=credentials)
 
         if mode=='title':
     #         words = [morph.parse(w)[0].normal_form for w in words]
@@ -132,13 +143,5 @@ def search(q='',mode='title'):
             return []
         else:
             return result
-    except TransportError:
-        return False
     except:
-        return -1
-
-# search(mode='kws',q='колебания механических')
-
-# search_user_library(username='kirill',mode='title',word='физика ')
-
-# search_user_library(username='kirill',mode='title',word='физика ')
+        return []

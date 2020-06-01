@@ -10,7 +10,7 @@ from env import credentials,project_id,private_key
 @csrf_exempt
 def search_page(request):
 	if request.method == 'GET':
-		return render(request, 'vk_search.html', {'title': 'Добавить'})	
+		return render(request, 'vk_search.html', {'title': 'Добавить группу'})
 	elif request.method == 'POST':
 		# pritn(request.POST)
 		data = upload_post_from_vk_group(request.user.username, request.POST.get('search'),project_id,credentials)
@@ -44,12 +44,3 @@ def user_posts(request):
 	else:
 		HttpResponseNotAllowed(['GET', 'POST'])
 
-
-@login_required
-@csrf_exempt
-def posts_search(request):
-	if request.method == 'GET':
-		return render(request, 'posts_search.html')
-	elif request.method == 'POST':
-		data = search_in_user_vk_library(request.user.username, request.POST.get('search'))
-		return render(request, 'posts_search_res.html', {'data': data})

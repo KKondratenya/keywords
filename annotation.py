@@ -57,6 +57,10 @@ class TextRank():
     
     def textrank(self,text,similar='serense'):
         text = treatment_text(text)
+        text = text.split('.')
+        text = list(filter(lambda x: len(x.split()) > 6, text))
+        text = '.'.join(text)
+
         sentences = sent_tokenize(text)
         tokenizer = RegexpTokenizer(r'\w+')
         lmtzr = RussianStemmer()
@@ -83,6 +87,10 @@ class TextRank():
 
         tr = self.textrank(text,similar=mera)
         top_n = sorted(tr[:n])
-        return ' '.join(x[2] for x in top_n)
+        x = ' '.join(x[2] for x in top_n)
+        if x!='':
+            return x
+        else:
+            return 'Слишком маленький текст (минимум 5 предложений)'
 
 

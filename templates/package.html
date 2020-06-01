@@ -16,36 +16,6 @@
     	</form>
     </div>
 </div>
-<div class="row">
-    <div class="row">
-        <form class="form-area" method="POST">
-            <div class="form-group">
-              <textarea class="text" placeholder="Введите текст" name="article">{{article}}</textarea>
-            </div>
-             <button type="submit" class="btn btn-secondary" name="create" value="create">Создать</button>                                                          
-            <div class="input-group mb-3">
-              <textarea class="form-control" placeholder="Ключевые слова" aria-label="keyword" name="keyword">{{keyword}}</textarea>
-            </div>
-            <div class="input-group mb-3">
-              <textarea class="form-control" placeholder="Аннотации" aria-label="annotation" name="annotation">{{annotation}}</textarea>
-            </div>
-        </form>
-    </div>
-    <script type="text/javascript">
-        let article = document.querySelector('textarea[name="article"]')
-        let button = document.querySelector('button[name="create"]')
-        button.setAttribute('disabled', true)
-        const checkTextAreas = () => {
-            if (article.value.trim() !== '')
-            {
-                button.removeAttribute('disabled')
-            } else {
-                button.setAttribute('disabled', true)
-            }
-        }
-        article.addEventListener('input', checkTextAreas)
-    </script>
-</div>
 <style type="text/css">
     textarea {
         resize: none;

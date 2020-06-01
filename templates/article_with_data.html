@@ -20,21 +20,39 @@
 			  </div>
 			  <textarea class="form-control" placeholder="Аннотации" aria-label="annotation" name="annotation">{{annotation}}</textarea>
 			</div>
+			<div>
+				<span>
+					Мера сходства
+				</span>
+					<input type="radio" name="koef" id="serense" value="serense" checked>
+					<label for="serense">
+						Коэффицент Сёренсена
+					</label>
+					<input type="radio" id="cos" name="koef" value="cos">
+					<label for="cos">
+						Косинусное расстояние
+					</label>
+			</div>
+			<button type="submit" class="btn btn-secondary" name="create" value="create">Создать</button>
+			<div>
+				Поиск похожих статей в
+			</div>
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="type_search" id="all" value="all" checked>
 			  <label class="form-check-label" for="all">
-			    Общая библиотека
+			    общей библиотеке
 			  </label>
 			</div>
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="type_search" id="users" value="users">
 			  <label class="form-check-label" for="users">
-			    Линая библиотека
+			    личной библиотеке
 			  </label>
 			</div>
-			<button type="submit" class="btn btn-secondary" name="create" value="create">Создать</button>
+
 			<button type="submit" class="btn btn-secondary" name="find_similiar" value="find_similiar">Найти похожие</button>
         </form>
+		{% if data|length > 0 %}
         <div>
           {% for data in data %}
                 <div><b>{{ forloop.counter }}. Автор</b>: {{ data.0 }}</div>
@@ -42,6 +60,12 @@
                	<div class="mb-1"><span style="visibility: hidden;">{{ forloop.counter }} .</span><b>Ключевые слова</b>: {{ data.2 }}</div>
           {% endfor %}
         </div>
+		{% elif data|length == 0 %}
+			<h2>
+				Ничего не найдено
+			</h2>
+		{% endif %}
+
     </div>
 </div>
 <style type="text/css">
