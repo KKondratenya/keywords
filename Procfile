@@ -1,1 +1,1 @@
-web: gunicorn keywords-extraction.wsgi --log-file -
+web: gunicorn key_words.wsgi --log-file -
