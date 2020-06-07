@@ -24,7 +24,7 @@ AUTH_USER_MODEL = "home.User"
 SECRET_KEY = '_xbckbpp^+6y6)9+i$kkp%t4s59_980x!s!jy&4mbm41jw7g2+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
