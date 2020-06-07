@@ -10,35 +10,11 @@ import pymorphy2
 
 morph = pymorphy2.MorphAnalyzer()
 
-from natasha import NamesExtractor
-from natasha.markup import show_markup, show_json
-
-def def_names(text):
-    extractor = NamesExtractor()
-
-    matches = extractor(text)
-    facts = [_.fact.as_json for _ in matches]
-
-    names = []
-    for i in range(len(facts)):
-        if 'first' in facts[i]:
-            x = facts[i]['first'].lower()
-            names.append(x)
-        if 'middle' in facts[i]:
-            x = facts[i]['middle'].lower()
-            names.append(x)
-        if 'last' in facts[i]:
-            x = facts[i]['last'].lower()
-            names.append(x)
-    return names
 
 
 class RAKE():
 
     def keywords_extract(self,text):
-        names = def_names(text)
-        for i in names:
-            text.replace(i, '')
         # разделяем текст на токены и приводим к нижнему регистру
         tokenized_text = text.lower()
         # убираем все лишник символы
