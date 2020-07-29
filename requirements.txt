@@ -69,7 +69,7 @@ sqlparse==0.3.1
 starlette==0.12.9
 tqdm==4.41.1
 urllib3==1.25.9
-uvicorn==0.11.1
+uvicorn==0.11.7
 uvloop==0.14.0
 websockets==8.1
 whitenoise==5.1.0
